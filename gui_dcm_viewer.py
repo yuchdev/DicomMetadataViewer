@@ -18,14 +18,17 @@ import pydicom
 
 
 class DICOMViewer(QMainWindow):
-    """Main window for the DICOM metadata tree viewer.
+    """
+    Main window for the DICOM metadata tree viewer.
 
     Displays a single-column QTreeWidget where each node shows:
     Tag | Name | VR | Value. Sequences are expandable with nested items.
     """
 
     def __init__(self):
-        """Initialize the UI and its widgets."""
+        """
+        Initialize the UI and its widgets.
+        """
         super().__init__()
         self.setWindowTitle("DICOM Viewer - Hierarchy Explorer")
         self.setGeometry(100, 100, 1000, 600)
@@ -48,10 +51,10 @@ class DICOMViewer(QMainWindow):
         layout.addWidget(self.tree)
 
     def browse_file(self):
-        """Open a file dialog, read the selected DICOM, and populate the tree."""
-        filepath, _ = QFileDialog.getOpenFileName(
-            self, "Open DICOM file", "", "DICOM Files (*.dcm);;All Files (*)"
-        )
+        """
+        Open a file dialog, read the selected DICOM, and populate the tree.
+        """
+        filepath, _ = QFileDialog.getOpenFileName(self, "Open DICOM file", "", "DICOM Files (*.dcm);;All Files (*)")
         if filepath:
             try:
                 ds = pydicom.dcmread(filepath)
@@ -61,12 +64,12 @@ class DICOMViewer(QMainWindow):
                 QMessageBox.critical(self, "Error", f"Failed to read DICOM file:\n{str(e)}")
 
     def insert_dataset(self, parent_item, dataset, level=0):
-        """Insert a Dataset into the tree widget recursively.
+        """
+        Insert a Dataset into the tree widget recursively.
 
-        Parameters:
-            parent_item (QTreeWidgetItem): Parent node to attach children to.
-            dataset (pydicom.dataset.Dataset): Dataset to traverse.
-            level (int): Current depth; used only for internal recursion.
+        :param: parent_item: QTreeWidgetItem to attach new items to.
+        :param: dataset: pydicom.dataset.Dataset instance to insert.
+        :param: level: Current recursion level (for potential future use).
         """
         for elem in dataset:
             tag = f"{elem.tag}"
@@ -89,12 +92,15 @@ class DICOMViewer(QMainWindow):
 
 
 def main():
-    """Run the Qt application and show the viewer window."""
+    """
+    Run the Qt application and show the viewer window.
+    :return: system exit code.
+    """
     app = QApplication(sys.argv)
     viewer = DICOMViewer()
     viewer.show()
-    sys.exit(app.exec())
+    return app.exec()
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

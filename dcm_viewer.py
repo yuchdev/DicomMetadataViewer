@@ -12,6 +12,8 @@ by other tools, and provides a CLI entry point via main().
 """
 
 import argparse
+import sys
+
 import pydicom
 from pydicom.tag import Tag
 
@@ -26,7 +28,8 @@ EXCLUDED_TAGS = {
 
 
 def is_binary_value(elem):
-    """Return True if the DICOM element likely contains binary/opaque data.
+    """
+    Return True if the DICOM element likely contains binary/opaque data.
 
     The function filters out:
     - Elements with tags in EXCLUDED_TAGS (e.g., Pixel Data)
@@ -34,11 +37,9 @@ def is_binary_value(elem):
     - Elements whose value is bytes
     - Values that fail string conversion or look like non-printable binary blobs
 
-    Parameters:
-        elem (pydicom.dataelem.DataElement): DICOM element to inspect.
+    :param: elem (pydicom.dataelem.DataElement): DICOM element to inspect.
 
-    Returns:
-        bool: True if the value should be treated as binary and skipped, else False.
+    :return: True if the value should be treated as binary and skipped, else False.
     """
     if elem.tag in EXCLUDED_TAGS:
         return True
@@ -57,13 +58,10 @@ def is_binary_value(elem):
 
 
 def format_tag(tag):
-    """Format a pydicom Tag into conventional (gggg,eeee) hex string.
-
-    Parameters:
-        tag (pydicom.tag.Tag): The tag to format.
-
-    Returns:
-        str: Tag formatted as '(GGGG,EEEE)'.
+    """
+    Format a pydicom Tag into conventional (gggg,eeee) hex string.
+    :param tag: pydicom.tag.Tag instance that represents a DICOM tag.
+    :return: Formatted string like "(0010,0010)"
     """
     return f"({tag.group:04X},{tag.element:04X})"
 
@@ -74,9 +72,8 @@ def print_dataset(dataset, indent=0):
     Each printed line includes: Tag | Name | VR | Value. Sequences (SQ)
     are traversed recursively with indentation to reflect hierarchy.
 
-    Parameters:
-        dataset (pydicom.dataset.Dataset): DICOM dataset to print.
-        indent (int): Current indent level (used internally for recursion).
+    :param: dataset: pydicom.dataset.Dataset instance to print.
+    :param: indent: Current indentation level (number of 2-space indents).
     """
     for elem in dataset:
         if is_binary_value(elem):
@@ -101,11 +98,12 @@ def print_dataset(dataset, indent=0):
 
 
 def main():
-    """CLI entry point.
+    """
+    CLI entry point.
 
     Parses the input DICOM path and prints the metadata using print_dataset.
 
-    Exit codes: 0 on success, non-zero on failure to read the file.
+    Exit codes: system return code 0 on success, 1 on failure.
     """
     parser = argparse.ArgumentParser(description="DICOM CLI Viewer (text metadata only)")
     parser.add_argument("file", help="Path to DICOM file")
@@ -116,7 +114,10 @@ def main():
         print_dataset(ds)
     except Exception as e:
         print(f"Error: Failed to read DICOM file: {e}")
+        return 1
+
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
