@@ -12,7 +12,7 @@ Then click "Open DICOM File" and pick a .dcm file.
 import sys
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout,
-    QPushButton, QFileDialog, QTreeWidget, QTreeWidgetItem, QMessageBox, QScrollArea
+    QPushButton, QFileDialog, QTreeWidget, QTreeWidgetItem, QMessageBox
 )
 import pydicom
 

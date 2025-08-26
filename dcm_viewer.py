@@ -49,10 +49,11 @@ def is_binary_value(elem):
         return True
     try:
         val_str = str(elem.value)
-        # Heuristic: long strings with few printable characters
-        if len(val_str) > 100 and sum(c.isprintable() for c in val_str) / len(val_str) < 0.6:
-            return True
-    except Exception:
+    except (TypeError, ValueError, UnicodeDecodeError):
+        return True
+
+    # Heuristic: long strings with few printable characters
+    if len(val_str) > 100 and sum(c.isprintable() for c in val_str) / len(val_str) < 0.6:
         return True
     return False
 
