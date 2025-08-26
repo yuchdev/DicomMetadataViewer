@@ -1,11 +1,11 @@
-"""gui_dcm_viewer
-==================
+__doc__ = """DICOM Metadata GUI Viewer
 
 Simple Qt-based GUI to explore DICOM metadata as a hierarchical tree.
 Relies on pydicom for reading datasets and PySide6 for the UI.
 
 Usage:
     python gui_dcm_viewer.py
+
 Then click "Open DICOM File" and pick a .dcm file.
 """
 

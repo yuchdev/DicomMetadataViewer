@@ -1,5 +1,4 @@
-"""dcm_viewer
-=================
+__doc__ = """DICOM Metadata CLI Viewer
 
 Command-line DICOM metadata viewer that prints human-readable DICOM tags
 excluding large/binary payloads (e.g., Pixel Data). Uses pydicom to read
@@ -18,6 +17,7 @@ from pydicom.tag import Tag
 
 # Value Representations that typically carry binary or large opaque data
 BINARY_VR = {"OB", "OD", "OF", "OL", "OV", "OW", "UN"}
+
 # Specific tags to exclude from textual output regardless of VR
 EXCLUDED_TAGS = {
     Tag(0x7FE0, 0x0010),  # Pixel Data
