@@ -3,19 +3,20 @@
 Lightweight utilities to inspect DICOM metadata via:
 
 - CLI: print human-readable tags to stdout (no pixel data)
-- GUI: browse tags in a hierarchical tree (PySide6)
+- GUI: browse tags in a hierarchical tree (`PySide6`)
 
 ## What is DICOM?
 
 DICOM (Digital Imaging and Communications in Medicine) is a standard for storing
 and transmitting medical images and related information. A DICOM file typically
 contains two parts:
-- Metadata (a set of elements identified by Tags and Value Representations/VRs)
+
+- Metadata (a set of elements identified by Tags and Value Representations/`VR`s)
 - Pixel/Waveform data (image or signal samples)
 
-Each metadata element is identified by a Tag written as (GGGG,EEEE) in hex and
-has a VR indicating data type (e.g., PN for Person Name, DA for Date, SQ for
-Sequence, etc.). Sequences (VR "SQ") contain nested datasets, forming a
+Each metadata element is identified by a Tag written as (`GGGG`, `EEEE`) in hex and
+has a `VR` indicating data type (e.g. `PN` for Person Name, `DA` for Date, `SQ` for
+Sequence, and so on). Sequences (`VR "SQ"`) contain nested datasets, forming a
 hierarchy. Large binary payloads like Pixel Data are typically not suitable for
 plain-text output.
 
@@ -30,9 +31,18 @@ Python 3.9+ is recommended.
 
 1) Create/activate a virtual environment (optional but recommended)
 
+### POSIX
+
 ```
 python -m venv .venv
-source .venv/bin/activate   # on Windows: .venv\\Scripts\\activate
+source .venv/bin/activate
+```
+
+### Windows
+
+```
+python.exe -m venv .venv
+.venv\Scripts\activate.ps1
 ```
 
 2) Install dependencies
@@ -46,7 +56,7 @@ pip install -r requirements.txt
 Basic command:
 
 ```
-python dcm_viewer.py /path/to/file.dcm
+python dcm_viewer.py dicom_file.dcm
 ```
 
 Example output (truncated):
@@ -77,7 +87,7 @@ Run the GUI:
 python gui_dcm_viewer.py
 ```
 
-Then click "Open DICOM File" and select a .dcm file. The left pane shows a
+Then click "Open DICOM File" and select a `*.dcm` file. The left pane shows a
 single-column tree with entries in the form:
 
 ```
@@ -88,7 +98,7 @@ Sequences are shown as expandable items; large values are truncated for display.
 
 ## Programmatic API
 
-You can import functions from dcm_viewer.py in your own scripts:
+You can import functions from `dcm_viewer.py` in your own scripts:
 
 ```
 from dcm_viewer import print_dataset, format_tag, is_binary_value
